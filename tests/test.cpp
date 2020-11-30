@@ -3,7 +3,6 @@
 //
 
 #include <algorithm>
-#include <iostream>
 #include <numeric>
 #include <random>
 #include <vector>
@@ -15,25 +14,39 @@
 TEST(BubbleSortTest, Test1) {
     std::vector<int> victim(1000);
     std::iota(victim.begin(), victim.end(), 0);
-    std::vector<int> target(victim);
     std::mt19937 rgen(42);
     std::shuffle(victim.begin(), victim.end(), rgen);
 
-    bubble_sort(victim.begin(), victim.end(), std::less<>());
-    for (size_t i = 0; i < target.size(); ++i) {
-        EXPECT_EQ(victim[i], target[i]);
-    }
+    bubble_sort(victim.begin(), victim.end());
+    EXPECT_TRUE(is_sorted(victim.begin(), victim.end()));
 }
 
 TEST(InsertionSort, Test1) {
     std::vector<int> victim(1000);
     std::iota(victim.begin(), victim.end(), 0);
-    std::vector<int> target(victim);
     std::mt19937 rgen(42);
     std::shuffle(victim.begin(), victim.end(), rgen);
 
-    insertion_sort(victim.begin(), victim.end(), std::less<>());
-    for (size_t i = 0; i < target.size(); ++i) {
-    EXPECT_EQ(victim[i], target[i]);
-    }
+    insertion_sort(victim.begin(), victim.end());
+    EXPECT_TRUE(is_sorted(victim.begin(), victim.end()));
+}
+
+TEST(ShellSort, Test1) {
+    std::vector<int> victim(1000);
+    std::iota(victim.begin(), victim.end(), 0);
+    std::mt19937 rgen(42);
+    std::shuffle(victim.begin(), victim.end(), rgen);
+
+    shell_sort(victim.begin(), victim.end());
+    EXPECT_TRUE(is_sorted(victim.begin(), victim.end()));
+}
+
+TEST(MergeSort, Test1) {
+    std::vector<int> victim(1000);
+    std::iota(victim.begin(), victim.end(), 0);
+    std::mt19937 rgen(42);
+    std::shuffle(victim.begin(), victim.end(), rgen);
+
+    merge_sort(victim.begin(), victim.end());
+    EXPECT_TRUE(is_sorted(victim.begin(), victim.end()));
 }
