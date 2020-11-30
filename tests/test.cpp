@@ -47,6 +47,36 @@ TEST(MergeSort, Test1) {
     std::mt19937 rgen(42);
     std::shuffle(victim.begin(), victim.end(), rgen);
 
-    merge_sort(victim.begin(), victim.end());
+    merge_sort_recursive(victim.begin(), victim.end());
+    EXPECT_TRUE(is_sorted(victim.begin(), victim.end()));
+}
+
+TEST(MergeSort, Test2) {
+    std::vector<int> victim(1000);
+    std::iota(victim.begin(), victim.end(), 0);
+    std::mt19937 rgen(42);
+    std::shuffle(victim.begin(), victim.end(), rgen);
+
+    merge_sort_iterative(victim.begin(), victim.end());
+    EXPECT_TRUE(is_sorted(victim.begin(), victim.end()));
+}
+
+TEST(SelectionSort, Test1) {
+    std::vector<int> victim(1000);
+    std::iota(victim.begin(), victim.end(), 0);
+    std::mt19937 rgen(42);
+    std::shuffle(victim.begin(), victim.end(), rgen);
+
+    selection_sort(victim.begin(), victim.end());
+    EXPECT_TRUE(is_sorted(victim.begin(), victim.end()));
+}
+
+TEST(HeapSort, Test1) {
+    std::vector<int> victim(1000);
+    std::iota(victim.begin(), victim.end(), 0);
+    std::mt19937 rgen(42);
+    std::shuffle(victim.begin(), victim.end(), rgen);
+
+    heap_sort(victim.begin(), victim.end());
     EXPECT_TRUE(is_sorted(victim.begin(), victim.end()));
 }

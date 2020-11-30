@@ -10,15 +10,11 @@
 
 template <class BidirectionalIt, class Compare = std::less<>>
 void bubble_sort(BidirectionalIt first, BidirectionalIt last, Compare cmp = Compare{}) {
-    // пустой рендж
     if (first == last) return;
     auto init_it = std::next(first);
-    // рендж длины 1
     while (init_it != last) {
-        // оптимизация для отсортированных данных
         auto changed = false;
         for (auto it = init_it; it != last; ++it) {
-            // итератор может быть односторонним, если смотреть следующий элемент, а не предыдущий
             // TODO(mocurin): использовать односторонние итераторы
             auto prev_it = std::prev(it);
             if (cmp(*it, *prev_it)) {
@@ -33,9 +29,7 @@ void bubble_sort(BidirectionalIt first, BidirectionalIt last, Compare cmp = Comp
 
 template <class BidirectionalIt, class Compare = std::less<>>
 void insertion_sort(BidirectionalIt first, BidirectionalIt last, Compare cmp = Compare{}) {
-    // пустой рендж
     if (first == last) return;
-    // рендж длины 1
     for (auto outer_it = std::next(first); outer_it != last; ++outer_it) {
         for (auto inner_it = outer_it;
              outer_it != first && cmp(*inner_it, *std::prev(inner_it));
@@ -65,12 +59,44 @@ void shell_sort(RandomIt first, RandomIt last,
 }
 
 template <typename RandomIt, typename Compare = std::less<>>
-void merge_sort(RandomIt first, RandomIt last, Compare cmp = Compare{}) {
+void merge_sort_recursive(RandomIt first, RandomIt last, Compare cmp = Compare{}) {
     if (first == last || std::next(first) == last) return;
     auto it = first + std::distance(first, last) / 2;
-    merge_sort(first, it, cmp);
-    merge_sort(it, last, cmp);
+    merge_sort_recursive(first, it, cmp);
+    merge_sort_recursive(it, last, cmp);
     std::inplace_merge(first, it, last, cmp);
+}
+
+template <typename RandomIt, typename Compare = std::less<>>
+void merge_sort_iterative(RandomIt first, RandomIt last, Compare cmp = Compare{}) {
+    if (first == last) return;
+    auto len = std::distance(first, last);
+    for (auto step = 1; step < len; step *= 2) {
+        for (auto it = first; it < last - step; it += 2 * step) {
+            std::inplace_merge(it, it + step, std::min(it + 2 * step, last), cmp);
+        }
+    }
+}
+
+template <typename ForwardIt, typename Compare = std::less<>>
+void selection_sort(ForwardIt first, ForwardIt last, Compare cmp = Compare{}) {
+    for (auto outer_it = first; outer_it < last; ++outer_it) {
+        auto reduce_res = outer_it;
+        for (auto inner_it = std::next(outer_it); inner_it < last; ++inner_it) {
+            if (cmp(*inner_it, *reduce_res)) {
+                reduce_res = inner_it;
+            }
+        }
+        std::iter_swap(outer_it, reduce_res);
+    }
+}
+
+template <typename RandomIt, typename Compare = std::less<>>
+void heap_sort(RandomIt first, RandomIt last, Compare cmp = Compare{}) {
+    std::make_heap(first, last, cmp);
+    while (first != last) {
+        std::pop_heap(first, last--, cmp);
+    }
 }
 
 #endif //ADS_HEADER_HPP
