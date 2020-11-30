@@ -24,3 +24,16 @@ TEST(BubbleSortTest, Test1) {
         EXPECT_EQ(victim[i], target[i]);
     }
 }
+
+TEST(InsertionSort, Test1) {
+    std::vector<int> victim(1000);
+    std::iota(victim.begin(), victim.end(), 0);
+    std::vector<int> target(victim);
+    std::mt19937 rgen(42);
+    std::shuffle(victim.begin(), victim.end(), rgen);
+
+    insertion_sort(victim.begin(), victim.end(), std::less<>());
+    for (size_t i = 0; i < target.size(); ++i) {
+    EXPECT_EQ(victim[i], target[i]);
+    }
+}
