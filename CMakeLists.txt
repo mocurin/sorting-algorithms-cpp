@@ -21,6 +21,13 @@ target_include_directories(lib PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/headers/
 )
 
+add_library(misc STATIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/sources/misc.cpp
+)
+target_include_directories(misc PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/headers/
+)
+
 add_executable(tests
   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
 )
@@ -28,7 +35,7 @@ target_include_directories(tests PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/headers/
 )
 
-target_link_libraries(tests GTest::gtest_main lib)
+target_link_libraries(tests GTest::gtest_main lib misc)
 
 enable_testing()
-add_test(NAME tests COMMAND tests)
+add_test(NAME unit_tests COMMAND tests)
