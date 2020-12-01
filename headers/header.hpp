@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <vector>
 
 template <class BidirectionalIt, class Compare = std::less<>>
 void bubble_sort(BidirectionalIt first, BidirectionalIt last, Compare cmp = Compare{}) {
@@ -96,6 +97,50 @@ void heap_sort(RandomIt first, RandomIt last, Compare cmp = Compare{}) {
     std::make_heap(first, last, cmp);
     while (first != last) {
         std::pop_heap(first, last--, cmp);
+    }
+}
+
+template <typename RandomIt, typename Compare = std::less<>>
+RandomIt partition(RandomIt first, RandomIt last, Compare cmp = Compare{}) {
+    auto value = *(first + std::distance(first, last) / 2);
+    last = std::prev(last);
+    while (true) {
+        while (cmp(*first, value)) ++first;
+        while (cmp(value, *last)) --last;
+        if (first >= last) return last;
+        std::iter_swap(first, last);
+    }
+}
+
+template <typename RandomIt, typename Compare = std::less<>>
+void quick_sort(RandomIt first, RandomIt last, Compare cmp = Compare{}) {
+    if (first == last || std::next(first) == last) return;
+    auto pivot = ::partition(first, last, cmp);
+    quick_sort(first, pivot, cmp);
+    quick_sort(pivot, last, cmp);
+}
+
+void counting_sort(std::vector<size_t>& victim, size_t k = 0) {
+    if (!k) k = *std::max_element(victim.begin(), victim.end()) + 1;
+    std::vector<size_t> counts(k);
+    for (const auto i : victim) ++counts[i];
+    victim.clear();
+    for (size_t i = 0; i < counts.size(); ++i) {
+        for (size_t j = 0; j < counts[i]; ++j) {
+            victim.push_back(i);
+        }
+    }
+}
+
+void radix_sort(std::vector<size_t>& victim, size_t k = 0) {
+    if (!k) k = *std::max_element(victim.begin(), victim.end()) + 1;
+    std::vector<size_t> counts(k);
+    for (const auto i : victim) ++counts[i];
+    victim.clear();
+    for (size_t i = 0; i < counts.size(); ++i) {
+        for (size_t j = 0; j < counts[i]; ++j) {
+            victim.push_back(i);
+        }
     }
 }
 

@@ -80,3 +80,23 @@ TEST(HeapSort, Test1) {
     heap_sort(victim.begin(), victim.end());
     EXPECT_TRUE(is_sorted(victim.begin(), victim.end()));
 }
+
+TEST(QuickSort, Test1) {
+    std::vector<int> victim(1000);
+    std::iota(victim.begin(), victim.end(), 0);
+    std::mt19937 rgen(42);
+    std::shuffle(victim.begin(), victim.end(), rgen);
+
+    quick_sort(victim.begin(), victim.end());
+    EXPECT_TRUE(is_sorted(victim.begin(), victim.end()));
+}
+
+TEST(CountingSort, Test1) {
+    std::vector<size_t> victim(1000);
+    std::iota(victim.begin(), victim.end(), 0);
+    std::mt19937 rgen(42);
+    std::shuffle(victim.begin(), victim.end(), rgen);
+
+    counting_sort(victim);
+    EXPECT_TRUE(is_sorted(victim.begin(), victim.end()));
+}
